@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sparkle On Site | Doorstep Car Wash</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- GSAP -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+<script>
+tailwind.config = {
+  theme:{
+    extend:{
+      colors:{
+        brand:"#22d3ee", /* lighter cyan for a softer theme */
+        dark:"#0a0a0a",
+        card:"#141414"
+      },
+      fontFamily:{
+        display:["Merriweather","serif"],
+        serif:["Merriweather","serif"]
+      }
+    }
+  }
+}
+</script>
+
+</head>
+<script>
+function saveToSheet(data){
+  fetch("https://script.google.com/macros/s/AKfycbxOC0KgB9TiPPpyHGfvFYwQE3HFla5Hz10M4YQf_yK7zCPPkC8QIDbSuez0ZnMjk7HGnA/exec",{
+    method:"POST",
+    body: JSON.stringify(data)
+  });
+}
+
+function submitBooking(){
+
+  const data = {
+    name: document.getElementById("fname").value,
+    phone: document.getElementById("phone").value,
+    carModel: document.getElementById("carmodel").value,
+    carType: document.getElementById("cartype").value,
+    service: document.querySelector(".service-option.selected .so-name").innerText,
+    price: document.querySelector(".service-option.selected .so-price").innerText,
+    date: document.getElementById("bookdate").value,
+    time: document.getElementById("booktime").value,
+    address: document.getElementById("address").value,
+    notes: document.getElementById("notes").value
+  };
+
+  // Save to Google Sheet
+  saveToSheet(data);
+
+  // WhatsApp message
+  const msg =
+  `🚗 *New Booking* %0A
+👤 ${data.name} %0A
+📞 ${data.phone} %0A
+🚘 ${data.carModel} (${data.carType}) %0A
+🧼 ${data.service} - ${data.price} %0A
+📅 ${data.date} %0A
+⏰ ${data.time} %0A
+📍 ${data.address}`;
+
+  window.open(`https://wa.me/919040661808?text=${msg}`,"_blank");
+}
+</script>
+<body class="bg-dark text-white scroll-smooth">
+
+<!-- NAVBAR -->
+<header class="fixed w-full bg-black/70 backdrop-blur-md z-50 border-b border-gray-800">
+
+<div class="max-w-7xl mx-auto flex justify-between items-center px-6 py-5">
+
+<h1 class="text-2xl font-bold tracking-wider font-serif" style="letter-spacing: 0.15em;"><img src="logo.png" alt="Sparkle On Site" class="h-12 w-15"></h1>
+
+<!-- Desktop Menu -->
+<nav class="hidden md:flex space-x-8 text-sm font-semibold text-gray-300">
+<a href="#about" class="hover:text-white">About</a>
+<a href="#pricing" class="hover:text-white">Pricing</a>
+<a href="#gallery" class="hover:text-white">Gallery</a>
+<a href="#booking" class="hover:text-white">Booking</a>
+<a href="#contact" class="hover:text-white">Contact</a>
+</nav>
+
+<!-- Mobile Button -->
+<button id="menuBtn" class="md:hidden text-white text-3xl">☰</button>
+
+</div>
+
+<!-- Mobile Menu -->
+<div id="mobileMenu" class="hidden flex flex-col text-center space-y-6 pb-6 text-gray-300 md:hidden">
+<a href="#about">About</a>
+<a href="#pricing">Pricing</a>
+<a href="#gallery">Gallery</a>
+<a href="#booking">Booking</a>
+<a href="#contact">Contact</a>
+</div>
+
+</header>
+
+<!-- HERO -->
+<section class="relative min-h-screen flex items-center justify-center text-center px-6 overflow-hidden">
+
+<div class="absolute inset-0 z-0">
+<img src="https://images.unsplash.com/photo-1607860108855-64acf2078ed9?auto=format&fit=crop&w=1920&q=80" class="w-full h-full object-cover opacity-80" alt="Car Wash Service">
+<div class="absolute inset-0 bg-gradient-to-b from-dark/30 via-dark/50 to-dark"></div>
+<div class="absolute inset-0 bg-gradient-to-r from-dark/80 via-transparent to-dark/80"></div>
+</div>
+
+<div class="relative z-10 max-w-4xl mx-auto mt-16">
+
+<h1 class="hero-title text-6xl md:text-8xl font-bold mb-6 uppercase drop-shadow-xl font-serif" style="letter-spacing: 0.05em;">
+<span class="text-brand">Doorstep</span> Car Wash
+</h1>
+
+<p class="hero-sub text-gray-300 text-xl md:text-2xl mb-10 drop-shadow-md">
+We value your time more than money.
+Premium car wash service at your doorstep.
+Professional Car Cleaning at Your Home
+</p>
+
+<a href="#booking" class="inline-block px-10 py-4 rounded-full font-bold bg-gradient-to-r from-cyan-500 to-blue-600 hover:opacity-90 hover:shadow-[0_0_20px_rgba(6,182,212,0.5)] hover:scale-105 transition transform duration-300">
+Book Now
+</a>
+
+</div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="max-w-6xl mx-auto py-24 px-6 text-center">
+<h2 class="section-title text-5xl mb-8 uppercase font-serif">
+About <span class="text-brand">Us</span>
+</h2>
+<p class="text-gray-400 max-w-3xl mx-auto">
+Sparkle On Site provides professional doorstep car wash services. We bring water-saving equipment, trained staff, and premium cleaning solutions right to your location.
+</p>
+</section>
+
+
+
+<!-- PRICING -->
+<section id="pricing" class="py-24">
+<div class="max-w-5xl mx-auto text-center px-6">
+<h2 class="section-title text-5xl mb-16 uppercase font-serif">
+Service <span class="text-brand">Packages</span>
+</h2>
+
+<div class="grid md:grid-cols-2 gap-10">
+
+<div class="price-card border border-gray-800 p-10 rounded-xl hover:border-cyan-400 hover:shadow-[0_0_20px_rgba(6,182,212,0.5)] hover:bg-white/5 hover:scale-150 transition transform duration-300 cursor-pointer">
+<h3 class="text-2xl mb-5">Quick Shine</h3>
+<p class="text-4xl text-brand mb-6">₹299</p>
+<p class="text-gray-400 mb-6 text-sm">Exterior wash • Tyre cleaning • Microfiber dry</p>
+<a href="#booking" class="inline-block px-6 py-3 rounded-full font-bold bg-gradient-to-r from-cyan-500 to-blue-600 hover:opacity-90 hover:shadow-[0_0_20px_rgba(6,182,212,0.5)] hover:scale-105 transition transform duration-300">Book Now</a>
+</div>
+
+<div class="price-card border border-gray-800 p-10 rounded-xl hover:border-cyan-400 hover:shadow-[0_0_20px_rgba(6,182,212,0.5)] hover:bg-white/5 hover:scale-110 transition transform duration-300 cursor-pointer">
+<h3 class="text-2xl mb-5">Complete Care</h3>
+<p class="text-4xl text-brand mb-6">₹590</p>
+<p class="text-gray-400 mb-6 text-sm">Interior vacuum • Exterior wash • Dashboard polish • Wheel shine</p>
+<a href="#booking" class="inline-block px-6 py-3 rounded-full font-bold bg-gradient-to-r from-cyan-500 to-blue-600 hover:opacity-90 hover:shadow-[0_0_20px_rgba(6,182,212,0.5)] hover:scale-105 transition transform duration-300">Book Now</a>
+</div>
+
+</div>
+</div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery" class="bg-card py-24 px-6 text-center">
+<h2 class="section-title text-5xl mb-16 uppercase font-serif">
+Service <span class="text-brand">Gallery</span>
+</h2>
+<div class="grid md:grid-cols-4 gap-4 max-w-7xl mx-auto">
+<img src="1.jpg" class="rounded overflow-hidden hover:scale-110 transition transform duration-300 cursor-pointer">
+<img src="2.jpg" class="rounded overflow-hidden hover:scale-110 transition transform duration-300 cursor-pointer">
+<img src="3.jpg" class="rounded overflow-hidden hover:scale-110 transition transform duration-300 cursor-pointer">
+<img src="4.jpg" class="rounded overflow-hidden hover:scale-110 transition transform duration-300 cursor-pointer">
+</div>
+</section>
+
+<!-- BOOKING -->
+  <div id="booking" class="page">
+    <section class="py-20">
+      <div class="max-w-6xl mx-auto px-6 grid lg:grid-cols-2 gap-12">
+        <div>
+          <div class="text-sm tracking-widest text-cyan-400 mb-3">Book a Service</div>
+          <h2 class="text-3xl md:text-4xl font-bold mb-4 font-serif">Schedule Your Doorstep Car Wash</h2>
+          <p class="text-gray-400 mb-8">Fill in the form and we'll confirm your booking via WhatsApp. We serve all areas within Berhampur, Odisha.</p>
+
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div class="bg-white/5 border border-white/10 rounded-xl p-4">
+              <div class="text-xl mb-1">📍</div>
+              <div class="font-semibold">Service Area</div>
+              <div class="text-gray-400 text-sm">Berhampur, Odisha only</div>
+            </div>
+            <div class="bg-white/5 border border-white/10 rounded-xl p-4">
+              <div class="text-xl mb-1">⏰</div>
+              <div class="font-semibold">Available Hours</div>
+              <div class="text-gray-400 text-sm">7:00 AM – 7:00 PM, All Days</div>
+            </div>
+            <div class="bg-white/5 border border-white/10 rounded-xl p-4">
+              <div class="text-xl mb-1">💳</div>
+              <div class="font-semibold">Pay After Service</div>
+              <div class="text-gray-400 text-sm">Cash / UPI / Card accepted</div>
+            </div>
+            <div class="bg-white/5 border border-white/10 rounded-xl p-4">
+              <div class="text-xl mb-1">📞</div>
+              <div class="font-semibold">Quick Confirm</div>
+              <div class="text-gray-400 text-sm">We call/WhatsApp to confirm</div>
+            </div>
+          </div>
+
+          <a href="https://wa.me/917894561230?text=Hi%2C%20I%27d%20like%20to%20book%20a%20car%20wash!" target="_blank" class="inline-flex items-center gap-2 mt-8 px-6 py-3 rounded-full font-semibold bg-gradient-to-r from-cyan-500 to-blue-600 hover:opacity-90 hover:shadow-[0_0_20px_rgba(6,182,212,0.5)] hover:scale-105 transition transform duration-300">
+            <img src="https://img.icons8.com/?size=100&id=BkugfgmBwtEI&format=png&color=000000" alt="WhatsApp" class="w-6 h-6">
+            Or Book via WhatsApp
+          </a>
+        </div>
+
+        <div class="bg-white/5 border border-white/10 rounded-2xl p-8 backdrop-blur">
+          <div class="text-xl font-bold mb-6">📋 Booking Details</div>
+
+          <div class="grid md:grid-cols-2 gap-4">
+            <input class="bg-white/10 border border-white/10 rounded-lg px-4 py-3" type="text" id="fname" placeholder="Full Name *">
+            <input class="bg-white/10 border border-white/10 rounded-lg px-4 py-3" type="tel" id="phone" placeholder="Phone Number *">
+            <input class="bg-white/10 border border-white/10 rounded-lg px-4 py-3" type="text" id="carmodel" placeholder="Car Model">
+            <select class="bg-white/10 text-white/50 border border-white/10 rounded-lg px-4 py-3" id="cartype">
+              <option class="bg-black text-white" value="">Car Type *</option>
+              <option class="bg-black text-white">Hatchback</option>
+              <option class="bg-black text-white">Sedan</option>
+              <option class="bg-black text-white">SUV</option>
+              <option class="bg-black text-white">MUV / Van</option>
+            </select>
+          </div>
+
+          <div class="mt-6">
+            <div class="font-semibold mb-3">Select Service *</div>
+            <div class="grid sm:grid-cols-2 gap-4" id="serviceSelector">
+              <div class="service-card border-2 border-cyan-400 rounded-xl p-4 cursor-pointer" onclick="selectService(this,'outside',299)">
+                <div class="text-2xl font-bold">₹299</div>
+                <div class="text-gray-400">🚿 Outside Wash</div>
+              </div>
+              <div class="service-card border-2 border-cyan-400 rounded-xl p-4 cursor-pointer" onclick="selectService(this,'full',590)">
+                <div class="text-2xl font-bold">₹590</div>
+                <div class="text-gray-400">✨ Full Wash</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-4 mt-6">
+            <input class="bg-white/10 border border-white/10 rounded-lg px-4 py-3" type="date" id="bookdate">
+            <select class="bg-white/10 text-white border-white/10 rounded-lg px-4 py-3" id="booktime">
+              <option class="bg-white/10 text-white/50 border-white/10 rounded-lg px-4 py-3" value="">Preferred Time *</option>
+              <option class="bg-black text-white">7:00 AM – 9:00 AM</option>
+              <option class="bg-black text-white">9:00 AM – 11:00 AM</option>
+              <option class="bg-black text-white">11:00 AM – 1:00 PM</option>
+              <option class="bg-black text-white">1:00 PM – 3:00 PM</option>
+              <option class="bg-black text-white">3:00 PM – 5:00 PM</option>
+              <option class="bg-black text-white">5:00 PM – 7:00 PM</option>
+            </select>
+            <input class="md:col-span-2 bg-white/10 border border-white/10 rounded-lg px-4 py-3" type="text" id="address" placeholder="Service Address *">
+          </div>
+
+          <div class="mt-6">
+            <div class="font-semibold mb-3">Payment Preference</div>
+            <div class="flex flex-wrap gap-3">
+              <button type="button" class="pay-btn border border-cyan-400 px-4 py-2 rounded-lg" onclick="selectPay(this,'Cash')">💵 Cash</button>
+              <button type="button" class="pay-btn border border-cyan-400 px-4 py-2 rounded-lg" onclick="selectPay(this,'UPI')">📲 UPI</button>
+              <button type="button" class="pay-btn border border-cyan-400 px-4 py-2 rounded-lg" onclick="selectPay(this,'Card')">💳 Card</button>
+            </div>
+          </div>
+
+          <textarea class="w-full mt-6 bg-white/10 border border-white/10 rounded-lg px-4 py-3" id="notes" placeholder="Additional Notes"></textarea>
+
+          <button onclick="submitBooking()" class="w-full mt-6 py-3 rounded-xl font-bold bg-gradient-to-r from-cyan-500 to-blue-600 hover:opacity-90 hover:shadow-[0_0_20px_rgba(6,182,212,0.5)] hover:scale-105 transition transform duration-300">
+            ✨ Confirm Booking
+          </button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+<script>
+let selectedService='full';
+let selectedPrice=590;
+let selectedPayment='Cash';
+
+function selectService(el,type,price){
+  document.querySelectorAll('.service-card').forEach(c=>{
+    c.classList.remove('border-2','border-cyan-400');
+    c.style.boxShadow='none';
+  });
+  el.classList.add('border-2','border-cyan-400');
+  el.style.boxShadow='0 0 20px rgba(6, 182, 212, 0.6), inset 0 0 20px rgba(6, 182, 212, 0.2)';
+  selectedService=type;
+  selectedPrice=price;
+}
+
+function selectPay(el,method){
+  document.querySelectorAll('.pay-btn').forEach(b=>{
+    b.classList.remove('border-cyan-400');
+    b.style.boxShadow='none';
+  });
+  el.classList.add('border-cyan-400');
+  el.style.boxShadow='0 0 20px rgba(6, 182, 212, 0.6), inset 0 0 20px rgba(6, 182, 212, 0.2)';
+  selectedPayment=method;
+}
+
+function submitBooking(){
+  const name=document.getElementById("fname").value;
+  const phone=document.getElementById("phone").value;
+  const car=document.getElementById("carmodel").value;
+  const type=document.getElementById("cartype").value;
+  const date=document.getElementById("bookdate").value;
+  const time=document.getElementById("booktime").value;
+  const addr=document.getElementById("address").value;
+  const note=document.getElementById("notes").value;
+
+  if(!name || !phone || !type || !date || !time || !addr){
+    alert("Please fill in all required fields!");
+    return;
+  }
+
+  const msg=`Car Wash Booking%0A%0AName: ${name}%0APhone: ${phone}%0ACar: ${car}%0AType: ${type}%0AService: ${selectedService}%0APrice: ₹${selectedPrice}%0ADate: ${date}%0ATime: ${time}%0AAddress: ${addr}%0APayment: ${selectedPayment}%0ANotes: ${note}`;
+  window.open(`https://wa.me/919040661808?text=${msg}`,'_blank');
+}
+</script>
+</body>
+
+
+
+<!-- CONTACT -->
+<section id="contact" class="bg-card py-24">
+<div class="max-w-6xl mx-auto px-6 text-center">
+<h2 class="section-title text-5xl mb-16 uppercase font-serif">
+Contact <span class="text-brand">Us</span>
+</h2>
+<p class="text-gray-400 mb-8">Available for doorstep service. Fast response on WhatsApp.</p>
+<a href="https://wa.me/919040661808" class="inline-block px-10 py-4 rounded-full font-bold bg-gradient-to-r from-cyan-500 to-blue-600 hover:opacity-90 hover:shadow-[0_0_20px_rgba(6,182,212,0.5)] hover:scale-105 transition transform duration-300">Chat on WhatsApp</a>
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer class="border-t border-gray-800 py-10 text-center text-gray-500">
+<p>© 2026 Sparkle On Site — Doorstep Car Wash</p>
+<div class="mt-4">
+<a href="https://www.instagram.com/sparkle_on_site?igsh=Z3Z3Nnh4ajFidWI1" target="_blank" class="text-gray-400 hover:text-white transition"> <img src="https://img.icons8.com/?size=100&id=Xy10Jcu1L2Su&format=png&color=000000" alt="Instagram" class="inline-block w-6 h-6 mr-2"> Instagram</a>
+</div>
+</footer>
+
+<!-- JAVASCRIPT -->
+<script>
+const btn = document.getElementById("menuBtn")
+const menu = document.getElementById("mobileMenu")
+btn.onclick = () => menu.classList.toggle("hidden")
+
+gsap.registerPlugin(ScrollTrigger)
+
+gsap.from(".hero-title",{y:80,opacity:0,duration:1})
+gsap.from(".hero-sub",{y:40,opacity:0,duration:1,delay:.3})
+
+gsap.utils.toArray(".section-title").forEach(section=>{
+  gsap.from(section,{scrollTrigger:section,y:60,opacity:0,duration:1})
+})
+
+gsap.utils.toArray(".program-card").forEach(card=>{
+  gsap.from(card,{scrollTrigger:card,y:80,opacity:0,duration:1})
+})
+
+gsap.utils.toArray(".price-card").forEach(card=>{
+  gsap.from(card,{scrollTrigger:card,scale:.8,opacity:0,duration:1})
+})
+</script>
+
+ 
+</html>
